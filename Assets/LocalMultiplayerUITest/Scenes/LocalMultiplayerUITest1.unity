@@ -283,7 +283,7 @@ MonoBehaviour:
       m_Flags: 0
     - m_Name: 
       m_Id: 4e8d0f34-933e-4c64-a413-b2becb51d868
-      m_Path: <XInputController>/buttonSouth
+      m_Path: <Gamepad>/buttonSouth
       m_Interactions: 
       m_Processors: 
       m_Groups: 

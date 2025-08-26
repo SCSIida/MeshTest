@@ -80,6 +80,7 @@ namespace LocalMultiplayerUITest
             Vector2 currentPosition = _virtualMouse.position.ReadValue();
             Vector2 delta = _virtualCursorMoveAction.ReadValue<Vector2>() * _cursorSpeed;
             Vector2 newPosition = currentPosition + delta;
+            newPosition = new Vector2(Mathf.Clamp(newPosition.x, 0, Screen.width), Mathf.Clamp(newPosition.y, 0, Screen.height));
             //Debug.Log($"{nameof(OnAfterUpdate)}: Current = {currentPosition}, Delta = {delta}, New = {newPosition}");
             InputState.Change(_virtualMouse.position, newPosition);
         }

@@ -1283,7 +1283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16c6f78230fa4964a222622d8aae332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 555467987391552602}
+  m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
   m_PlayerRoot: {fileID: 9138271363282953962}
@@ -1314,7 +1314,7 @@ MonoBehaviour:
   m_ScrollWheelAction: {fileID: 2657582067230607962, guid: 911d87042a72ac146b0701673f1104bc, type: 3}
   m_TrackedDevicePositionAction: {fileID: -7868840358001357558, guid: 911d87042a72ac146b0701673f1104bc, type: 3}
   m_TrackedDeviceOrientationAction: {fileID: 5950263917994606445, guid: 911d87042a72ac146b0701673f1104bc, type: 3}
-  m_DeselectOnBackgroundClick: 0
+  m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
   m_ScrollDeltaPerTick: 6

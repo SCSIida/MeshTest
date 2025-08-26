@@ -33,8 +33,7 @@ namespace LocalMultiplayerUITest
 
         private void CursorPointActionCallback(InputAction.CallbackContext context)
         {
-            Debug.Log($"{nameof(CursorUI)}: {nameof(CursorPointActionCallback)}: {context.phase}: {context.control.device.name}, {context.ReadValue<Vector2>()}");
-            _cursorTransform.anchoredPosition = context.ReadValue<Vector2>();
+            _cursorTransform.anchoredPosition = context.ReadValue<Vector2>() / ((Vector2)_cursorTransform.parent.lossyScale);
         }
 
         public void SetCursorVisible(bool visible)

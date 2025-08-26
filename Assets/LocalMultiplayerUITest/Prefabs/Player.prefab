@@ -1332,7 +1332,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerInput: {fileID: 421569304784196689}
   _virtualCursorMoveActionName: VirtualCursorMove
-  _virutalCursorLeftClickActionName: VirtualCursorLeftClick
+  _virtualCursorLeftClickActionName: VirtualCursorLeftClick
   _cursorSpeed: 1
 --- !u!114 &756908094321070494
 MonoBehaviour:
@@ -1348,7 +1348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerInput: {fileID: 421569304784196689}
   _actionName: Point
-  _cursorTramsform: {fileID: 245486633334927966}
+  _cursorTransform: {fileID: 245486633334927966}
 --- !u!1 &5591898254940712146
 GameObject:
   m_ObjectHideFlags: 0

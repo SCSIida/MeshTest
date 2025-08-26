@@ -11,7 +11,7 @@ namespace LocalMultiplayerUITest
         [SerializeField]
         private string _virtualCursorMoveActionName = "VirtualCursorMove";
         [SerializeField]
-        private string _virutalCursorLeftClickActionName = "VirtualCursorLeftClick";
+        private string _virtualCursorLeftClickActionName = "VirtualCursorLeftClick";
 
         [SerializeField]
         private float _cursorSpeed = 100f;
@@ -45,7 +45,7 @@ namespace LocalMultiplayerUITest
 
             _mouse = virtualMouse;
             _virtualCursorMoveAction = playerInput.actions.FindAction(_virtualCursorMoveActionName, true);
-            _virtualCursorLeftClickAction = playerInput.actions.FindAction(_virutalCursorLeftClickActionName, true);
+            _virtualCursorLeftClickAction = playerInput.actions.FindAction(_virtualCursorLeftClickActionName, true);
             _virtualCursorLeftClickAction.started += OnVirtualCursorLeftClickActionCallback;
             _virtualCursorLeftClickAction.canceled += OnVirtualCursorLeftClickActionCallback;
             _assignedPlayerInput = playerInput;

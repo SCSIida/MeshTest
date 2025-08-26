@@ -11,7 +11,7 @@ namespace LocalMultiplayerUITest
         private string _actionName = "Point";
 
         [SerializeField]
-        private RectTransform _cursorTramsform;
+        private RectTransform _cursorTransform;
 
         private InputAction _cursorPointAction;
 
@@ -34,7 +34,7 @@ namespace LocalMultiplayerUITest
         private void CursorPointActionCallback(InputAction.CallbackContext context)
         {
             Debug.Log($"{nameof(CursorUI)}: {nameof(CursorPointActionCallback)}: {context.phase}: {context.control.device.name}, {context.ReadValue<Vector2>()}");
-            _cursorTramsform.anchoredPosition = context.ReadValue<Vector2>();
+            _cursorTransform.anchoredPosition = context.ReadValue<Vector2>();
         }
     }
 }

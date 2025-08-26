@@ -51,6 +51,7 @@ namespace LocalMultiplayerUITest
                 {
                     int index = _players.Count - 1;
                     Player player = _players[index];
+                    player.PlayerInput.onControlsChanged -= OnControlsChanged;
                     Destroy(player.gameObject);
                     _players.RemoveAt(index);
                 }
@@ -65,11 +66,13 @@ namespace LocalMultiplayerUITest
                 if (_players.Count == 1)
                 {
                     _players[0].PlayerInput.neverAutoSwitchControlSchemes = false;
+                    _players[0].PlayerInput.onControlsChanged += OnControlsChanged;
+                    Cursor.visible = _players[0].PlayerInput.IsPlayerUsingDevice(MouseUtils.FindSystemMouse());
                 }
                 foreach (Player player in _players)
                 {
                     player.PlayerInput.ActivateInput();
-                    //player.PlayerInput.actions.Enable();
+                    player.GetComponent<CursorUI>()?.SetCursorVisible(true);
                 }
             }
             Debug.Log($"{nameof(TogglePlayerManagement)}: {_isPlayerManagementActive}");
@@ -112,8 +115,13 @@ namespace LocalMultiplayerUITest
             PlayerInput playerInput = PlayerInput.Instantiate(prefab, pairWithDevice: device);
             playerInput.neverAutoSwitchControlSchemes = true;
             playerInput.DeactivateInput();
-            //playerInput.actions.Disable();
+            playerInput.GetComponent<CursorUI>()?.SetCursorVisible(false);
             return playerInput;
+        }
+
+        private void OnControlsChanged(PlayerInput playerInput)
+        {
+            Cursor.visible = playerInput.IsPlayerUsingDevice(MouseUtils.FindSystemMouse());
         }
     }
 }

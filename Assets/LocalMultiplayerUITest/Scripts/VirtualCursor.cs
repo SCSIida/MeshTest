@@ -17,9 +17,11 @@ namespace LocalMultiplayerUITest
         private float _cursorSpeed = 100f;
 
         private PlayerInput _assignedPlayerInput;
-        private Mouse _mouse;
+        private Mouse _virtualMouse;
         private InputAction _virtualCursorMoveAction;
         private InputAction _virtualCursorLeftClickAction;
+
+        private Mouse _pairedMouse;
 
         private void OnEnable()
         {
@@ -43,7 +45,9 @@ namespace LocalMultiplayerUITest
                 }
             }
 
-            _mouse = virtualMouse;
+            CachePairedMouse(playerInput);
+
+            _virtualMouse = virtualMouse;
             _virtualCursorMoveAction = playerInput.actions.FindAction(_virtualCursorMoveActionName, true);
             _virtualCursorLeftClickAction = playerInput.actions.FindAction(_virtualCursorLeftClickActionName, true);
             _virtualCursorLeftClickAction.started += OnVirtualCursorLeftClickActionCallback;
@@ -60,9 +64,9 @@ namespace LocalMultiplayerUITest
         {
             InputSystem.onAfterUpdate -= OnAfterUpdate;
 
-            InputSystem.RemoveDevice(_mouse);
+            InputSystem.RemoveDevice(_virtualMouse);
 
-            _mouse = null;
+            _virtualMouse = null;
             _virtualCursorMoveAction = null;
             _virtualCursorLeftClickAction.started -= OnVirtualCursorLeftClickActionCallback;
             _virtualCursorLeftClickAction.canceled -= OnVirtualCursorLeftClickActionCallback;
@@ -73,54 +77,55 @@ namespace LocalMultiplayerUITest
 
         private void OnAfterUpdate()
         {
-            Vector2 currentPosition = _mouse.position.ReadValue();
+            Vector2 currentPosition = _virtualMouse.position.ReadValue();
             Vector2 delta = _virtualCursorMoveAction.ReadValue<Vector2>() * _cursorSpeed;
             Vector2 newPosition = currentPosition + delta;
             //Debug.Log($"{nameof(OnAfterUpdate)}: Current = {currentPosition}, Delta = {delta}, New = {newPosition}");
-            InputState.Change(_mouse.position, newPosition);
+            InputState.Change(_virtualMouse.position, newPosition);
         }
 
         private void OnVirtualCursorLeftClickActionCallback(InputAction.CallbackContext context)
         {
-            _mouse.CopyState(out MouseState mouseState);
+            _virtualMouse.CopyState(out MouseState mouseState);
             mouseState.WithButton(MouseButton.Left, context.control.IsPressed());
-            InputState.Change(_mouse, mouseState);
+            InputState.Change(_virtualMouse, mouseState);
         }
 
         /// <summary>
         /// Called when the control scheme or devices change for the PlayerInput.
         /// </summary>
+        /// <remarks>
+        /// This method will be triggered automatically when <see cref="PlayerInput.notificationBehavior"/> is set to <see cref="PlayerNotifications.SendMessages"/>.
+        /// </remarks>
         /// <param name="playerInput"></param>
         private void OnControlsChanged(PlayerInput playerInput)
         {
-            string controls = "";
-            InputAction action = playerInput.actions.FindAction("Point");
-            for(var i = 0; i < action.controls.Count; i++)
+            Mouse systemMouse = MouseUtils.FindSystemMouse();
+            if (playerInput.IsPlayerUsingDevice(systemMouse))
             {
-                controls += $"{{{i}: {action.controls[i].device?.name}}}, ";
-            }
-            Debug.Log($"{nameof(VirtualCursor)}: {nameof(OnControlsChanged)}: {playerInput.currentControlScheme}: {(playerInput.devices.Count > 0 ? playerInput.devices[0].name : "")} ({playerInput.devices.Count}), Controls = {controls}, Point.ActiveControl = {action.activeControl?.device?.name}, Mouse.crrent = {Mouse.current?.name}, VirtualMouse = {_mouse?.position.ReadValue()}");
-            Cursor.visible = playerInput.currentControlScheme == "Keyboard&Mouse";
-            if (playerInput.currentControlScheme == "Keyboard&Mouse")
-            {
-                //Cursor.SetCursor(null, _mouse.position.ReadValue(), CursorMode.Auto);
-                if (_mouse?.added ?? false)
-                {
-                    Mouse.current.WarpCursorPosition(_mouse.position.ReadValue());
-                }
+                // Move the system cursor to the virtual cursor position.
+                systemMouse.WarpCursorPosition(_pairedMouse.position.ReadValue());
             }
             else
-            // TODO: Can we check if _mouse device is used or not?
-            if (playerInput.currentControlScheme == "Gamepad")
+            if (playerInput.IsPlayerUsingDevice(_virtualMouse))
             {
-                if (_mouse?.added ?? false)
+                // Move the virtual cursor to the current software cursor position.
+                InputState.Change(_virtualMouse.position, _pairedMouse.position.ReadValue());
+            }
+
+            CachePairedMouse(playerInput);
+        }
+
+        private void CachePairedMouse(PlayerInput playerInput)
+        {
+            foreach (InputDevice device in playerInput.devices)
+            {
+                if (device is Mouse)
                 {
-                    InputState.Change(_mouse.position, Mouse.current.position.ReadValue());
-                    //InputState.Change(_mouse.position, playerInput.actions.FindAction("Point").ReadValue<Vector2>());
+                    _pairedMouse = device as Mouse;
+                    break;
                 }
             }
-            // TODO: Virtual cursor stop moving after switching from keyboard/mouse to gamepad.
-
         }
     }
 }

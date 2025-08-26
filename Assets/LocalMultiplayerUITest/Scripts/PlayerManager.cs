@@ -104,7 +104,7 @@ namespace LocalMultiplayerUITest
                 for (int i = 0; i < _players.Count; i++)
                 {
                     Player player = _players[i];
-                    player.PlayerRootCanvas.GetComponent<RectTransform>().anchoredPosition = new Vector2(i * (1920 / _players.Count), 0);
+                    player.PlayerRootCanvas.GetComponent<RectTransform>().anchoredPosition = new Vector2((i - ((_players.Count - 1) / 2f)) * (Screen.width / (_players.Count + 1f)), 0);
                 }
             }
         }

@@ -1333,7 +1333,7 @@ MonoBehaviour:
   _playerInput: {fileID: 421569304784196689}
   _virtualCursorMoveActionName: VirtualCursorMove
   _virtualCursorLeftClickActionName: VirtualCursorLeftClick
-  _cursorSpeed: 1
+  _cursorSpeed: 5
 --- !u!114 &756908094321070494
 MonoBehaviour:
   m_ObjectHideFlags: 0

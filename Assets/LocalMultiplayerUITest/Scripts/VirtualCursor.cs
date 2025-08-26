@@ -78,7 +78,7 @@ namespace LocalMultiplayerUITest
         private void OnAfterUpdate()
         {
             Vector2 currentPosition = _virtualMouse.position.ReadValue();
-            Vector2 delta = _virtualCursorMoveAction.ReadValue<Vector2>() * _cursorSpeed;
+            Vector2 delta = _virtualCursorMoveAction.ReadValue<Vector2>() * _cursorSpeed * (Screen.height / 1080f);
             Vector2 newPosition = currentPosition + delta;
             newPosition = new Vector2(Mathf.Clamp(newPosition.x, 0, Screen.width), Mathf.Clamp(newPosition.y, 0, Screen.height));
             //Debug.Log($"{nameof(OnAfterUpdate)}: Current = {currentPosition}, Delta = {delta}, New = {newPosition}");

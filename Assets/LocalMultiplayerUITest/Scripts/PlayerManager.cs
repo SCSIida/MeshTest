@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 namespace LocalMultiplayerUITest
 {
@@ -13,6 +14,9 @@ namespace LocalMultiplayerUITest
         private InputAction _joinInputAction;
         [SerializeField]
         private GameObject _playerPrefab;
+
+        [SerializeField]
+        private GameObject _publicUIRoot;
 
         private bool _isPlayerManagementActive = false;
 
@@ -116,6 +120,10 @@ namespace LocalMultiplayerUITest
             playerInput.neverAutoSwitchControlSchemes = true;
             playerInput.DeactivateInput();
             playerInput.GetComponent<CursorUI>()?.SetCursorVisible(false);
+            if (playerInput.uiInputModule is InputSystemUIIgnorablePointerInputModule inputModule)
+            {
+                inputModule.dontIgnoreChildren = _publicUIRoot;
+            }
             return playerInput;
         }
 
